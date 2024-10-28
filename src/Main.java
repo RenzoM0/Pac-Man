@@ -13,6 +13,7 @@ public class Main {
         PacMan pacmanGame = new PacMan(window);
         frame.add(pacmanGame);
         frame.pack(); //full size of jpanel in window
+        pacmanGame.requestFocus();
         frame.setVisible(true);
     }
 }

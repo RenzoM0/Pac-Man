@@ -1,13 +1,19 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.HashSet;
 import javax.swing.*;
 
-public class PacMan extends JPanel {
+public class PacMan extends JPanel implements ActionListener, KeyListener {
     private Window window;
     HashSet<GameObject> walls;
     HashSet<GameObject> foods;
     HashSet<GameObject> ghosts;
     GameObject player;
+
+    private Timer timer;
 
     //Images
     private Image wallImage;
@@ -30,6 +36,12 @@ public class PacMan extends JPanel {
         setBackground(Color.BLACK);
         initializeGameObjects();
         loadMap();
+
+        addKeyListener(this);
+        setFocusable(true);
+
+        timer = new Timer(50, this); //20fps (1000ms/50ms)
+        timer.start();
     }
 
     private void initializeGameObjects() {
@@ -69,24 +81,24 @@ public class PacMan extends JPanel {
                 int y = r * window.getTileSize();
 
                 if (tileMapChar == 'X') { //block wall
-                    GameObject wall = new Wall(wallImage, x, y, window.getTileSize(), window.getTileSize());
+                    GameObject wall = new Wall(wallImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize());
                     walls.add(wall);
                 } else if (tileMapChar == 'b') { //blue ghost
-                    GameObject ghost = new Ghost(blueGhostImage, x, y, window.getTileSize(), window.getTileSize());
+                    GameObject ghost = new Ghost(blueGhostImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize());
                     ghosts.add(ghost);
                 } else if (tileMapChar == 'o') { //orange ghost
-                    GameObject ghost = new Ghost(orangeGhostImage, x, y, window.getTileSize(), window.getTileSize());
+                    GameObject ghost = new Ghost(orangeGhostImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize());
                     ghosts.add(ghost);
                 } else if (tileMapChar == 'p') { //pink ghost
-                    GameObject ghost = new Ghost(pinkGhostImage, x, y, window.getTileSize(), window.getTileSize());
+                    GameObject ghost = new Ghost(pinkGhostImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize());
                     ghosts.add(ghost);
                 } else if (tileMapChar == 'r') { //red ghost
-                    GameObject ghost = new Ghost(redGhostImage, x, y, window.getTileSize(), window.getTileSize());
+                    GameObject ghost = new Ghost(redGhostImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize());
                     ghosts.add(ghost);
                 } else if (tileMapChar == 'P') { //player
-                    player = new Player(pacmanRightImage, x, y, window.getTileSize(), window.getTileSize());
+                    player = new Player(pacmanRightImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize());
                 } else if (tileMapChar == ' ') { //food
-                    GameObject food = new Food(null, x + 14, y + 14, 4, 4);
+                    GameObject food = new Food(null, x + 14, y + 14, 4, 4, window.getTileSize());
                     foods.add(food);
                 }
             }
@@ -128,5 +140,37 @@ public class PacMan extends JPanel {
         for (GameObject food : foods) food.render(g);
         for (GameObject ghost : ghosts) ghost.render(g);
         player.render(g);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ((Player) player).move();
+        repaint();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            ((Player) player).setDirection('U');
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            ((Player) player).setDirection('D');
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            ((Player) player).setDirection('L');
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            ((Player) player).setDirection('R');
+        }
     }
 }

@@ -12,6 +12,10 @@ public class Player extends GameObject{
         this.game = game;
     }
 
+    public char getDirection() {
+        return direction;
+    }
+
     public void setDirection(char direction) {
         char prevDirection = this.direction;
         this.direction = direction;

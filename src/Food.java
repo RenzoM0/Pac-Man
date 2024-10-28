@@ -8,6 +8,7 @@ public class Food extends GameObject{
 
     @Override
     public void render(Graphics g) {
+        g.fillRect(x, y, width, height);
         g.drawImage(image, x, y, width, height, null);
     }
 }

@@ -142,6 +142,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.setColor(Color.WHITE);
         // Render all game objects
         for (GameObject wall : walls) wall.render(g);
         for (GameObject food : foods) food.render(g);
@@ -175,6 +176,19 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             ((Player) player).setDirection('L');
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             ((Player) player).setDirection('R');
+        }
+
+        if (player.getDirection() == 'U') {
+            player.image = pacmanUpImage;
+        }
+        else if (player.getDirection() == 'D') {
+            player.image = pacmanDownImage;
+        }
+        else if (player.getDirection() == 'L') {
+            player.image = pacmanLeftImage;
+        }
+        else if (player.getDirection() == 'R') {
+            player.image = pacmanRightImage;
         }
     }
 }

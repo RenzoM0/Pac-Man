@@ -11,7 +11,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     HashSet<GameObject> walls;
     HashSet<GameObject> foods;
     HashSet<GameObject> ghosts;
-    GameObject player;
+    Player player;
 
     private Timer timer;
 
@@ -96,7 +96,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                     GameObject ghost = new Ghost(redGhostImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize());
                     ghosts.add(ghost);
                 } else if (tileMapChar == 'P') { //player
-                    player = new Player(pacmanRightImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize());
+                    player = new Player(pacmanRightImage, x, y, window.getTileSize(), window.getTileSize(), window.getTileSize(), this);
                 } else if (tileMapChar == ' ') { //food
                     GameObject food = new Food(null, x + 14, y + 14, 4, 4, window.getTileSize());
                     foods.add(food);
@@ -132,6 +132,13 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "XXXXXXXXXXXXXXXXXXX"
     };
 
+    public boolean collision(GameObject a, GameObject b) {
+        return a.x < b.x + b.width &&
+                a.x + a.width > b.x &&
+                a.y < b.y + b.height &&
+                a.y + a.height > b.y;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -144,7 +151,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ((Player) player).move();
+        player.move();
         repaint();
     }
 
@@ -162,14 +169,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             ((Player) player).setDirection('U');
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             ((Player) player).setDirection('D');
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             ((Player) player).setDirection('L');
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             ((Player) player).setDirection('R');
         }
     }

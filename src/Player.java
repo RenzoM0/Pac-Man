@@ -1,77 +1,49 @@
-import java.awt.*;
+import java.awt.Image;
 
-public class Player extends GameObject{
+public class Player extends GameObject {
 
-    private char direction = 'U';
-    private int velocityX = 0;
-    private int velocityY = 0;
-    private PacMan game;
+    char direction = 'U'; // Up, Down, Left, Right
+    int velocityX = 0;
+    int velocityY = 0;
 
-    public Player(Image image, int x, int y, int width, int height, int tileSize, PacMan game) {
-        super(image, x, y, width, height, tileSize);
-        this.game = game;
+    Player(Image image, int x, int y, int width, int height) {
+        super(image, x, y, width, height);
     }
 
-    public char getDirection() {
-        return direction;
-    }
-
-    public void setDirection(char direction) {
-        char prevDirection = this.direction;
+    void updateDirection(char direction, int tileSize) {
         this.direction = direction;
-        updateVelocity();
-        this.x += this.velocityX;
-        this.y += this.velocityY;
-        for (GameObject wall : game.walls) {
-            if (game.collision(this, wall)) {
-                this.x -= this.velocityX;
-                this.y -= this.velocityY;
-                this.direction = prevDirection;
-                updateVelocity();
-            }
+        switch (direction) {
+            case 'U':
+                velocityX = 0;
+                velocityY = -tileSize / 4;
+                break;
+            case 'D':
+                velocityX = 0;
+                velocityY = tileSize / 4;
+                break;
+            case 'L':
+                velocityX = -tileSize / 4;
+                velocityY = 0;
+                break;
+            case 'R':
+                velocityX = tileSize / 4;
+                velocityY = 0;
+                break;
         }
+
+        // Update position
+        move();
     }
 
-    private void updateVelocity() {
-        if (this.direction == 'U') {
-            this.velocityX = 0;
-            this.velocityY = -tileSize/4;
-        }
-        else if (this.direction == 'D') {
-            this.velocityX = 0;
-            this.velocityY = tileSize/4;
-        }
-        else if (this.direction == 'L') {
-            this.velocityX = -tileSize/4;
-            this.velocityY = 0;
-        }
-        else if (this.direction == 'R') {
-            this.velocityX = tileSize/4;
-            this.velocityY = 0;
-        }
-    }
-
-    public void move() {
+    void move() {
         this.x += velocityX;
         this.y += velocityY;
-
-        //check wall collisions
-        for (GameObject wall : game.walls) {
-            if (game.collision(this, wall)) {
-                this.x -= velocityX;
-                this.y -= velocityY;
-                break;
-            }
-        }
     }
 
-    void reset() {
-        this.x = this.startX;
-        this.y = this.startY;
+    void reset(int startX, int startY) {
+        super.reset(startX, startY);
+        velocityX = 0;
+        velocityY = 0;
     }
 
-    @Override
-    public void render(Graphics g) {
-        g.drawImage(image, x, y, width, height, null);
-    }
 }

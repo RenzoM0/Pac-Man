@@ -1,24 +1,30 @@
 import java.awt.*;
 
-public abstract class GameObject {
-    protected int x;
-    protected int y;
-    protected int width;
-    protected int height;
-    protected int tileSize;
+public class GameObject {
+
+    int x, y;
+    int width, height;
     Image image;
 
-    protected int startX;
-    protected int startY;
-
-    public GameObject(Image image, int x, int y, int width, int height, int tileSize) {
+    GameObject(Image image, int x, int y, int width, int height) {
         this.image = image;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.tileSize = tileSize;
     }
 
-    public abstract void render(Graphics g);
+    void reset(int startX, int startY) {
+        this.x = startX;
+        this.y = startY;
+    }
+
+    // Add collision detection method
+    public boolean collidesWith(GameObject other) {
+        return this.x < other.x + other.width
+                && this.x + this.width > other.x
+                && this.y < other.y + other.height
+                && this.y + this.height > other.y;
+    }
+
 }

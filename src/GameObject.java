@@ -19,7 +19,6 @@ public class GameObject {
         this.y = startY;
     }
 
-    // Add collision detection method
     public boolean collidesWith(GameObject other) {
         return this.x < other.x + other.width
                 && this.x + this.width > other.x

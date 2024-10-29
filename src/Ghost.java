@@ -8,13 +8,13 @@ public class Ghost extends GameObject {
     int velocityX = 0;
     int velocityY = 0;
     private Random random = new Random();
-    private int tileSize; // Add tileSize as a class variable
+    private int tileSize;
     private HashSet<Wall> walls;
 
     Ghost(Image image, int x, int y, int width, int height, int tileSize, HashSet<Wall> walls) {
         super(image, x, y, width, height);
         this.walls = walls;
-        this.tileSize = tileSize; // Initialize tileSize
+        this.tileSize = tileSize;
         this.direction = getRandomDirection();
         updateVelocity();
     }
@@ -52,11 +52,9 @@ public class Ghost extends GameObject {
     }
 
     public void move(int boardWidth) {
-        // Store the original position
         int originalX = this.x;
         int originalY = this.y;
 
-        // Update position based on velocity
         this.x += velocityX;
         this.y += velocityY;
 
@@ -73,16 +71,15 @@ public class Ghost extends GameObject {
                 this.x = originalX;
                 this.y = originalY;
 
-                // Choose a new random direction
                 this.direction = getRandomDirection(); // Randomly choose a new direction
-                updateVelocity(); // Update velocity according to the new direction
-                break; // We can exit after handling the first collision
+                updateVelocity();
+                break;
             }
         }
     }
 
     void reset(int startX, int startY) {
         super.reset(startX, startY);
-        updateDirection(); // Get a new random direction
+        updateDirection();
     }
 }

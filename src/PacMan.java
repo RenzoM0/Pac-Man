@@ -175,7 +175,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     // Update ghosts' positions
     private void updateGhosts() {
         for (Ghost ghost : ghosts) {
-            ghost.move(window.getWINDOW_WIDTH()); // Call the move() method to update ghost's position
+            ghost.move(window.getWINDOW_WIDTH()); // Call the move() method to update ghost's position, Width used for collision detection empty spots
         }
     }
 
@@ -185,7 +185,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         draw(g);
     }
 
-    // Draw the Pac-Man, walls, ghosts, and foods
     private void draw(Graphics g) {
         // Draw walls
         for (Wall wall : walls) {
@@ -214,6 +213,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         if (gameOver) {
             g.setFont(new Font("Arial", Font.BOLD, 24));
             g.drawString("Game Over", getWidth() / 2 - 60, getHeight() / 2);
+            g.drawString("Press R to restart", getWidth() / 2 - 60, getHeight() / 2 + 20);
         }
     }
 
@@ -259,7 +259,13 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        if (gameOver) {
+            if (e.getKeyCode() == KeyEvent.VK_R) {
+                resetGame();
+            }
+        }
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {}
